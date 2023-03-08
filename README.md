@@ -4,6 +4,7 @@ One of the projects to complete [FreeCodeCamp Relational Database Certification]
 ## My notes from the tutorials completed up to this point:
 
 ### PostGres Commands
+```
 psql --username=freecodecamp --dbname=postgres
 pg_dump -cC --inserts -U freecodecamp universe > universe.sql
 psql -U postgres < universe.sql
@@ -11,9 +12,10 @@ psql -U postgres < universe.sql
 \c <database_name> - connect to database
 \d - list tables in the DB
 \d <table_name> - details about a table
-
+```
 
 ### SQL Commands
+```sql
 CREATE DATABASE database_name;
 ALTER DATABASE database_name RENAME TO new_database_name;
 
@@ -78,3 +80,4 @@ FULL JOIN table_2 ON junction_table.foreign_key_column = table_2.primary_key_col
 	SELECT * FROM character_actions
 		FULL JOIN characters ON character_actions.character_id = characters.character_id
 		FULL JOIN actions ON character_actions.action_id = actions.action_id;
+```
