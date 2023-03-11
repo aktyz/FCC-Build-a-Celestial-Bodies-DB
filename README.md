@@ -34,6 +34,8 @@ ALTER TABLE table_name RENAME COLUMN column_name TO new_name;
 
 ALTER TABLE table_name ADD PRIMARY KEY(column_name);
 ALTER TABLE table_name DROP CONSTRAINT constraint_name;
+ALTER TABLE table_name ALTER COLUMN column_name SET constraint_name;
+	ALTER TABLE people ALTER COLUMN age SET NOT NULL;
 
 // create a column as a foreign key one to one relationship:
 ALTER TABLE table_name ADD COLUMN column_name DATATYPE CONSTRAINT REFERENCES referenced_table_name(referenced_column_name);
@@ -96,6 +98,24 @@ SELECT first_name, last_name, gpa FROM students WHERE major_id IS NULL AND (firs
 SELECT * FROM students WHERE gpa IS NOT NULL  ORDER BY gpa DESC, first_name LIMIT 10;
 SELECT course FROM courses WHERE course LIKE '_e%' OR course LIKE '%s' ORDER BY course DESC LIMIT 5;
 ```
+### SQL Basic commands on tables with FOREIGN KEY
+```
+// FULL JOINs
+// one-to-one, one-to-many
+SELECT columns FROM table_1 FULL JOIN table_2 ON table_1.primary_key_column = table_2.foreign_key_column;
+	SELECT * FROM characters FULL JOIN more_info ON characters.character_id = more_info.character_id;
+	SELECT * FROM characters FULL JOIN sounds ON characters.character_id = sounds.character_id;
+
+// many-to-many
+SELECT columns FROM junction_table
+FULL JOIN table_1 ON junction_table.foreign_key_column = table_1.primary_key_column
+FULL JOIN table_2 ON junction_table.foreign_key_column = table_2.primary_key_column;
+	SELECT * FROM character_actions
+		FULL JOIN characters ON character_actions.character_id = characters.character_id
+		FULL JOIN actions ON character_actions.action_id = actions.action_id;
+
+TRUNCATE <table name> removes all data from the table
+```
 ### SQL Matematical operations
 ```
 SELECT MIN(gpa) FROM students;
@@ -117,11 +137,15 @@ SELECT major_id, MIN(gpa), MAX(gpa) FROM students GROUP BY major_id HAVING MAX(g
 SELECT major_id, MIN(gpa) AS min_gpa, MAX(gpa) AS max_gpa FROM students GROUP BY major_id HAVING MAX(gpa)=4;
 SELECT major_id, COUNT(*) AS number_of_students FROM students GROUP BY major_id;
 SELECT major_id, COUNT(*) AS number_of_students FROM students GROUP BY major_id HAVING COUNT(*) < 8;
+SELECT DISTINCT COUNT(*) OVER() AS total FROM games GROUP BY game_id HAVING winner_goals > 2;
+// 
 
 SELECT major_id, COUNT(*) AS number_of_students, ROUND(AVG(gpa),2) AS avarage_gpa
 FROM students
 GROUP BY major_id HAVING COUNT(*) > 1;
-
+```
+### SQL Joins
+```
 SELECT * FROM students
 FULL JOIN majors
 ON students.major_id = majors.major_id;
@@ -151,12 +175,16 @@ OR gpa >= 3.8
 ORDER BY gpa DESC;
 
 SELECT * FROM students FULL JOIN majors USING(major_id);
-
+```
+#### SQL JOIN with USING keyword
+```
 SELECT * FROM students
 FULL JOIN majors USING(major_id)
 FULL JOIN majors_courses USING(major_id)
 FULL JOIN courses USING(course_id);
-
+```
+### SQL Multiple joins example with ORDER BY and GROUP BY
+```
 //List of courses, in alphabetical order, with only one student enrolled:
 SELECT DISTINCT(course) 
 FROM students
@@ -200,22 +228,13 @@ GROUP BY c.course
 HAVING COUNT(s.student_id) = 1
 ORDER BY c.course;
 ```
-
-
+#### Stacking table results (need to have the same number of columns) one over another:
 ```
-// FULL JOINs
-// one-to-one, one-to-many
-SELECT columns FROM table_1 FULL JOIN table_2 ON table_1.primary_key_column = table_2.foreign_key_column;
-	SELECT * FROM characters FULL JOIN more_info ON characters.character_id = more_info.character_id;
-	SELECT * FROM characters FULL JOIN sounds ON characters.character_id = sounds.character_id;
+SELECT name FROM games AS g LEFT JOIN teams AS t ON g.opponent_id=t.team_id
+WHERE g.year=2014 AND g.round='Eighth-Final'
 
-// many-to-many
-SELECT columns FROM junction_table
-FULL JOIN table_1 ON junction_table.foreign_key_column = table_1.primary_key_column
-FULL JOIN table_2 ON junction_table.foreign_key_column = table_2.primary_key_column;
-	SELECT * FROM character_actions
-		FULL JOIN characters ON character_actions.character_id = characters.character_id
-		FULL JOIN actions ON character_actions.action_id = actions.action_id;
+UNION
 
-TRUNCATE <table name> removes all data from the table
+SELECT name FROM games AS g LEFT JOIN teams AS t ON g.winner_id=t.team_id
+WHERE g.year=2014 AND g.round='Eighth-Final';
 ```
