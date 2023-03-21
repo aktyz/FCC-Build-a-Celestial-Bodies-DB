@@ -61,6 +61,7 @@ INSERT INTO table_name(column_1, column_2) VALUES(value1, value2);
 	INSERT INTO second_table (id, username) VALUES (1, 'Samus'),(2, 'Mario'), (3, 'Luigi');
 
 DELETE FROM table_name WHERE condition;
+TRUNCATE <table name> removes all data from the table
 
 UPDATE table_name SET column_name=new_value WHERE condition;
 	UPDATE people SET age=27 WHERE name='Zyta';
@@ -87,7 +88,7 @@ ILIKE will ignore the case of the letters when matching:
 SELECT * FROM courses WHERE course NOT ILIKE '%A%';
 ```
 More examples of SQL pattern matching:
-```
+```sql
 SELECT * FROM courses WHERE course LIKE '_e%';
 SELECT * FROM courses WHERE course LIKE '% %';
 SELECT * FROM courses WHERE course NOT LIKE '% %';
@@ -99,7 +100,7 @@ SELECT * FROM students WHERE gpa IS NOT NULL  ORDER BY gpa DESC, first_name LIMI
 SELECT course FROM courses WHERE course LIKE '_e%' OR course LIKE '%s' ORDER BY course DESC LIMIT 5;
 ```
 ### SQL Basic commands on tables with FOREIGN KEY
-```
+```sql
 // FULL JOINs
 // one-to-one, one-to-many
 SELECT columns FROM table_1 FULL JOIN table_2 ON table_1.primary_key_column = table_2.foreign_key_column;
@@ -114,10 +115,10 @@ FULL JOIN table_2 ON junction_table.foreign_key_column = table_2.primary_key_col
 		FULL JOIN characters ON character_actions.character_id = characters.character_id
 		FULL JOIN actions ON character_actions.action_id = actions.action_id;
 
-TRUNCATE <table name> removes all data from the table
+
 ```
 ### SQL Matematical operations
-```
+```sql
 SELECT MIN(gpa) FROM students;
 SELECT MIN(gpa) FROM students;
 SELECT SUM(major_id) FROM students;
