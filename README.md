@@ -1,4 +1,4 @@
-# FCC-Build-a-Celestial-Bodies_DB
+# FCC-Build-a-Celestial-Bodies-DB
 One of the projects to complete [FreeCodeCamp Relational Database Certification](https://www.freecodecamp.org/learn/relational-database/)
 
 ## My notes from the tutorials completed up to this point:
